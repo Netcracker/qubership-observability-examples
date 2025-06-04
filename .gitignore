@@ -1,0 +1,12 @@
+# Temporary Build Files
+/build/
+
+# VisualStudioCode
+.vscode/
+
+.idea/
+*.iml
+
+# Python
+venv/
+.mypy_cache/
