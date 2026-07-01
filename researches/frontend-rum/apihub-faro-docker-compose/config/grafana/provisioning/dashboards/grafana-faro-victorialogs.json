@@ -1,0 +1,2515 @@
+{
+    "apiVersion": "dashboard.grafana.app/v2",
+    "kind": "Dashboard",
+    "metadata": {
+      "name": "adktfx9",
+      "namespace": "default",
+      "uid": "29356b77-bf71-4cf8-8b38-4e4a077ae8da",
+      "resourceVersion": "1782889541089989",
+      "generation": 4,
+      "creationTimestamp": "2026-07-01T06:25:07Z",
+      "labels": {
+        "grafana.app/deprecatedInternalID": "549007670812672"
+      },
+      "annotations": {
+        "grafana.app/createdBy": "user:cfqrnb2p5x4w0e",
+        "grafana.app/folder": "",
+        "grafana.app/saved-from-ui": "Grafana v13.0.2 (3fcdbc5a)",
+        "grafana.app/updatedBy": "user:cfqrnb2p5x4w0e",
+        "grafana.app/updatedTimestamp": "2026-07-01T07:05:41Z"
+      }
+    },
+    "spec": {
+      "annotations": [
+        {
+          "kind": "AnnotationQuery",
+          "spec": {
+            "query": {
+              "kind": "DataQuery",
+              "group": "grafana",
+              "version": "v0",
+              "datasource": {
+                "name": "-- Grafana --"
+              },
+              "spec": {
+                "limit": 100,
+                "matchAny": false,
+                "tags": [],
+                "type": "dashboard"
+              }
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "builtIn": true
+          }
+        }
+      ],
+      "cursorSync": "Off",
+      "description": "Frontend monitoring dashboard using metrics collected with Grafana Faro SDK.",
+      "editable": true,
+      "elements": {
+        "panel-10": {
+          "kind": "Panel",
+          "spec": {
+            "id": 10,
+            "title": "Largest Contentful Paint (LCP)",
+            "description": "Largest Contentful Paint (LCP): measures loading performance. To provide a good user experience, LCP should occur within 2.5 seconds of when the page first starts loading.\nhttps://web.dev/lcp/",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "victoriametrics-logs-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "${datasource}"
+                        },
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "deployment.environment.name:\"$env\" AND service.name:\"$app\" AND measurement.name:\"lcp\" | stats avg(measurement.value)",
+                          "queryType": "statsRange"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.2",
+              "spec": {
+                "options": {
+                  "colorMode": "value",
+                  "graphMode": "none",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "auto",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "ms",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 2500,
+                          "color": "#EAB839"
+                        },
+                        {
+                          "value": 4000,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-11": {
+          "kind": "Panel",
+          "spec": {
+            "id": 11,
+            "title": "Cumulative Layout Shift (CLS)",
+            "description": "Cumulative Layout Shift (CLS): measures visual stability. To provide a good user experience, pages should maintain a CLS of 0.1. or less.\nhttps://web.dev/cls/",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "victoriametrics-logs-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "${datasource}"
+                        },
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "deployment.environment.name:\"$env\" AND service.name:\"$app\" AND measurement.name:\"cls\" | stats avg(measurement.value)",
+                          "queryType": "statsRange"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.2",
+              "spec": {
+                "options": {
+                  "colorMode": "value",
+                  "graphMode": "none",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "auto",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "none",
+                    "min": 0,
+                    "max": 1,
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 0.1,
+                          "color": "#EAB839"
+                        },
+                        {
+                          "value": 0.3,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-12": {
+          "kind": "Panel",
+          "spec": {
+            "id": 12,
+            "title": "Interaction to Next Paint (INP)",
+            "description": "First Input Delay (FID): measures interactivity. To provide a good user experience, pages should have a FID of 100 milliseconds or less.\nhttps://web.dev/fid/",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "victoriametrics-logs-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "${datasource}"
+                        },
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "deployment.environment.name:\"$env\" AND service.name:\"$app\" AND measurement.name:\"inp\" | stats avg(measurement.value)",
+                          "queryType": "statsRange"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.2",
+              "spec": {
+                "options": {
+                  "colorMode": "value",
+                  "graphMode": "none",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "auto",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "ms",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 100,
+                          "color": "#EAB839"
+                        },
+                        {
+                          "value": 300,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-18": {
+          "kind": "Panel",
+          "spec": {
+            "id": 18,
+            "title": "Total Exceptions",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "victoriametrics-logs-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "${datasource}"
+                        },
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "deployment.environment.name:\"$env\" AND service.name:\"$app\" AND exception.type:* | stats count()",
+                          "queryType": "stats"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.2",
+              "spec": {
+                "options": {
+                  "colorMode": "value",
+                  "graphMode": "none",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "auto",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 1,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    },
+                    "noValue": "0"
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-2": {
+          "kind": "Panel",
+          "spec": {
+            "id": 2,
+            "title": "Page Load, p75",
+            "description": "TTFB is a metric that measures the time between the request for a resource and when the first byte of a response begins to arrive.\nhttps://web.dev/ttfb/",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "victoriametrics-logs-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "${datasource}"
+                        },
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "deployment.environment.name:\"$env\" AND service.name:\"$app\" AND measurement.name:\"ttfb\" | stats quantile(0.75, measurement.value)",
+                          "queryType": "statsRange"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "victoriametrics-logs-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "${datasource}"
+                        },
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "deployment.environment.name:\"$env\" AND service.name:\"$app\" AND measurement.name:\"fcp\" | stats quantile(0.75, measurement.value)",
+                          "queryType": "statsRange"
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "victoriametrics-logs-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "${datasource}"
+                        },
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "deployment.environment.name:\"$env\" AND service.name:\"$app\" AND measurement.name:\"lcp\" | stats quantile(0.75, measurement.value)",
+                          "queryType": "statsRange"
+                        }
+                      },
+                      "refId": "C",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.2",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "single",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "ms",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": true,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "normal"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-20": {
+          "kind": "Panel",
+          "spec": {
+            "id": 20,
+            "title": "Top Exceptions",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "victoriametrics-logs-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "${datasource}"
+                        },
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "deployment.environment.name:\"$env\" AND service.name:\"$app\" AND exception.type:* | stats by (exception.message, exception.type) count() as logs | sort by (logs desc) | limit 10",
+                          "queryType": "instant"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [
+                  {
+                    "kind": "Transformation",
+                    "group": "extractFields",
+                    "spec": {
+                      "options": {
+                        "delimiter": ",",
+                        "format": "auto",
+                        "keepTime": true,
+                        "replace": true,
+                        "source": "labels"
+                      }
+                    }
+                  },
+                  {
+                    "kind": "Transformation",
+                    "group": "organize",
+                    "spec": {
+                      "options": {
+                        "excludeByName": {
+                          "Time": true,
+                          "logs": false
+                        },
+                        "includeByName": {},
+                        "indexByName": {
+                          "Time": 0,
+                          "exception.message": 1,
+                          "exception.type": 2,
+                          "logs": 3
+                        },
+                        "renameByName": {
+                          "exception.message": "Message",
+                          "exception.type": "Type",
+                          "logs": "Count"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "table",
+              "version": "13.0.2",
+              "spec": {
+                "options": {
+                  "cellHeight": "sm",
+                  "showHeader": true,
+                  "sortBy": [
+                    {
+                      "desc": true,
+                      "displayName": "Count"
+                    }
+                  ]
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    },
+                    "custom": {
+                      "align": "auto",
+                      "cellOptions": {
+                        "type": "auto"
+                      },
+                      "footer": {
+                        "reducers": []
+                      },
+                      "inspect": false
+                    }
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Count"
+                      },
+                      "properties": [
+                        {
+                          "id": "custom.width",
+                          "value": 100
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "panel-21": {
+          "kind": "Panel",
+          "spec": {
+            "id": 21,
+            "title": "Top URLs by Exception Count",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "victoriametrics-logs-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "${datasource}"
+                        },
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "deployment.environment.name:\"$env\" AND service.name:\"$app\" AND exception.type:* | stats by (url.full) count() as logs | sort by (logs desc) | limit 10",
+                          "queryType": "instant"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [
+                  {
+                    "kind": "Transformation",
+                    "group": "extractFields",
+                    "spec": {
+                      "options": {
+                        "delimiter": ",",
+                        "format": "auto",
+                        "keepTime": true,
+                        "replace": true,
+                        "source": "labels"
+                      }
+                    }
+                  },
+                  {
+                    "kind": "Transformation",
+                    "group": "organize",
+                    "spec": {
+                      "options": {
+                        "excludeByName": {
+                          "Time": true
+                        },
+                        "includeByName": {},
+                        "indexByName": {
+                          "Time": 0,
+                          "logs": 2,
+                          "url.full": 1
+                        },
+                        "renameByName": {
+                          "Value #A": "Count",
+                          "logs": "Count",
+                          "page_url": "URL",
+                          "url.full": "URL",
+                          "value": "Error"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "table",
+              "version": "13.0.2",
+              "spec": {
+                "options": {
+                  "cellHeight": "sm",
+                  "showHeader": true,
+                  "sortBy": [
+                    {
+                      "desc": true,
+                      "displayName": "Count"
+                    }
+                  ]
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    },
+                    "custom": {
+                      "align": "auto",
+                      "cellOptions": {
+                        "type": "auto"
+                      },
+                      "footer": {
+                        "reducers": []
+                      },
+                      "inspect": false
+                    }
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Count"
+                      },
+                      "properties": [
+                        {
+                          "id": "custom.width",
+                          "value": 100
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "panel-23": {
+          "kind": "Panel",
+          "spec": {
+            "id": 23,
+            "title": "Top Browsers by Exception Count",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "victoriametrics-logs-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "${datasource}"
+                        },
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "deployment.environment.name:\"$env\" AND service.name:\"$app\" AND exception.type:* | stats by (browser.name, browser.version) count() as logs | sort by (logs desc) | limit 10",
+                          "queryType": "instant"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [
+                  {
+                    "kind": "Transformation",
+                    "group": "extractFields",
+                    "spec": {
+                      "options": {
+                        "delimiter": ",",
+                        "format": "auto",
+                        "keepTime": true,
+                        "replace": true,
+                        "source": "labels"
+                      }
+                    }
+                  },
+                  {
+                    "kind": "Transformation",
+                    "group": "organize",
+                    "spec": {
+                      "options": {
+                        "excludeByName": {
+                          "Time": true
+                        },
+                        "includeByName": {},
+                        "indexByName": {
+                          "Time": 0,
+                          "browser.name": 1,
+                          "browser.version": 2,
+                          "logs": 3
+                        },
+                        "renameByName": {
+                          "Value #A": "Count",
+                          "browser.name": "Name",
+                          "browser.version": "Version",
+                          "browser_name": "Browser",
+                          "browser_version": "Version",
+                          "logs": "Counrt",
+                          "page_url": "URL",
+                          "value": "Error"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "table",
+              "version": "13.0.2",
+              "spec": {
+                "options": {
+                  "cellHeight": "sm",
+                  "showHeader": true,
+                  "sortBy": [
+                    {
+                      "desc": true,
+                      "displayName": "Count"
+                    }
+                  ]
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    },
+                    "custom": {
+                      "align": "auto",
+                      "cellOptions": {
+                        "type": "auto"
+                      },
+                      "footer": {
+                        "reducers": []
+                      },
+                      "inspect": false
+                    }
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Version"
+                      },
+                      "properties": [
+                        {
+                          "id": "custom.width",
+                          "value": 150
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Errors"
+                      },
+                      "properties": [
+                        {
+                          "id": "custom.width",
+                          "value": 100
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "panel-25": {
+          "kind": "Panel",
+          "spec": {
+            "id": 25,
+            "title": "Exceptions Over Time",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "victoriametrics-logs-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "${datasource}"
+                        },
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "deployment.environment.name:\"$env\" AND service.name:\"$app\" AND exception.type:* | stats count()",
+                          "legendFormat": "errors",
+                          "queryType": "statsRange"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.2",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "single",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "errors"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "red",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "panel-29": {
+          "kind": "Panel",
+          "spec": {
+            "id": 29,
+            "title": "Popular Browsers",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "victoriametrics-logs-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "${datasource}"
+                        },
+                        "spec": {
+                          "adHocFiltersMode": "extraFilters",
+                          "editorMode": "code",
+                          "expr": "deployment.environment.name:\"$env\" AND service.name:\"$app\" AND measurement.name:\"ttfb\" | stats by (browser.name, browser.version) count() as logs | sort by (logs desc) | limit 10",
+                          "queryType": "instant"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [
+                  {
+                    "kind": "Transformation",
+                    "group": "extractFields",
+                    "spec": {
+                      "options": {
+                        "delimiter": ",",
+                        "format": "auto",
+                        "keepTime": true,
+                        "replace": true,
+                        "source": "labels"
+                      }
+                    }
+                  },
+                  {
+                    "kind": "Transformation",
+                    "group": "organize",
+                    "spec": {
+                      "options": {
+                        "excludeByName": {
+                          "Time": true
+                        },
+                        "includeByName": {},
+                        "indexByName": {
+                          "Time": 0,
+                          "browser.name": 1,
+                          "browser.version": 2,
+                          "logs": 3
+                        },
+                        "renameByName": {
+                          "Value #A": "Count",
+                          "browser.name": "Name",
+                          "browser.version": "Version",
+                          "browser_name": "Browser",
+                          "browser_version": "Version",
+                          "logs": "Logs"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "table",
+              "version": "13.0.2",
+              "spec": {
+                "options": {
+                  "cellHeight": "sm",
+                  "showHeader": true,
+                  "sortBy": [
+                    {
+                      "desc": true,
+                      "displayName": "Count"
+                    }
+                  ]
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    },
+                    "custom": {
+                      "align": "auto",
+                      "cellOptions": {
+                        "type": "auto"
+                      },
+                      "footer": {
+                        "reducers": []
+                      },
+                      "inspect": false
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-30": {
+          "kind": "Panel",
+          "spec": {
+            "id": 30,
+            "title": "Visits",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "victoriametrics-logs-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "${datasource}"
+                        },
+                        "spec": {
+                          "adHocFiltersMode": "extraFilters",
+                          "editorMode": "code",
+                          "expr": "deployment.environment.name:\"$env\" AND service.name:\"$app\" AND measurement.name:\"ttfb\" | stats by (_stream) count() as logs",
+                          "queryType": "statsRange"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.2",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "single",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": true,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "errors"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "red",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "panel-35": {
+          "kind": "Panel",
+          "spec": {
+            "id": 35,
+            "title": "Top Events",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "victoriametrics-logs-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "${datasource}"
+                        },
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "deployment.environment.name:\"$env\" AND service.name:\"$app\" AND event.name:* | stats by (event.name) count() as logs | sort by (logs desc) | limit 10",
+                          "queryType": "instant"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [
+                  {
+                    "kind": "Transformation",
+                    "group": "extractFields",
+                    "spec": {
+                      "options": {
+                        "delimiter": ",",
+                        "format": "auto",
+                        "keepTime": true,
+                        "replace": true,
+                        "source": "labels"
+                      }
+                    }
+                  },
+                  {
+                    "kind": "Transformation",
+                    "group": "organize",
+                    "spec": {
+                      "options": {
+                        "excludeByName": {
+                          "Time": true
+                        },
+                        "indexByName": {},
+                        "renameByName": {
+                          "Value #A": "Count",
+                          "event_name": "Name",
+                          "value": "Error"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "table",
+              "version": "13.0.2",
+              "spec": {
+                "options": {
+                  "cellHeight": "sm",
+                  "showHeader": true,
+                  "sortBy": [
+                    {
+                      "desc": true,
+                      "displayName": "Count"
+                    }
+                  ]
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    },
+                    "custom": {
+                      "align": "auto",
+                      "cellOptions": {
+                        "type": "auto"
+                      },
+                      "footer": {
+                        "reducers": []
+                      },
+                      "inspect": false
+                    }
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Count"
+                      },
+                      "properties": [
+                        {
+                          "id": "custom.width",
+                          "value": 100
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "panel-36": {
+          "kind": "Panel",
+          "spec": {
+            "id": 36,
+            "title": "",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "text",
+              "version": "13.0.2",
+              "spec": {
+                "options": {
+                  "code": {
+                    "language": "plaintext",
+                    "showLineNumbers": false,
+                    "showMiniMap": false
+                  },
+                  "content": "# Web Vitals\n\nFor Web Vitals help: [https://web.dev/vitals/](https://web.dev/vitals/)",
+                  "mode": "markdown"
+                },
+                "fieldConfig": {
+                  "defaults": {},
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-37": {
+          "kind": "Panel",
+          "spec": {
+            "id": 37,
+            "title": "Top Users",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "victoriametrics-logs-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "${datasource}"
+                        },
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "deployment.environment.name:\"$env\" AND service.name:\"$app\" AND event.name:* | stats by (event.attributes.session.id) count() as logs | sort by (logs desc) | limit 50",
+                          "queryType": "instant"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [
+                  {
+                    "kind": "Transformation",
+                    "group": "extractFields",
+                    "spec": {
+                      "options": {
+                        "delimiter": ",",
+                        "format": "auto",
+                        "keepTime": true,
+                        "replace": true,
+                        "source": "labels"
+                      }
+                    }
+                  },
+                  {
+                    "kind": "Transformation",
+                    "group": "organize",
+                    "spec": {
+                      "options": {
+                        "excludeByName": {
+                          "Time": true
+                        },
+                        "indexByName": {},
+                        "renameByName": {
+                          "Value #A": "Count",
+                          "event_name": "Name",
+                          "value": "Error"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "table",
+              "version": "13.0.2",
+              "spec": {
+                "options": {
+                  "cellHeight": "sm",
+                  "showHeader": true,
+                  "sortBy": [
+                    {
+                      "desc": true,
+                      "displayName": "Count"
+                    }
+                  ]
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    },
+                    "custom": {
+                      "align": "auto",
+                      "cellOptions": {
+                        "type": "auto"
+                      },
+                      "footer": {
+                        "reducers": []
+                      },
+                      "inspect": false
+                    }
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Count"
+                      },
+                      "properties": [
+                        {
+                          "id": "custom.width",
+                          "value": 100
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "panel-4": {
+          "kind": "Panel",
+          "spec": {
+            "id": 4,
+            "title": "Cumulative Layout Shift, p75",
+            "description": "Cumulative Layout Shift (CLS): measures visual stability. To provide a good user experience, pages should maintain a CLS of 0.1. or less.\nhttps://web.dev/cls/",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "victoriametrics-logs-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "${datasource}"
+                        },
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "deployment.environment.name:\"$env\" AND service.name:\"$app\" AND measurement.name:\"cls\" | stats quantile(0.75, measurement.value)",
+                          "queryType": "statsRange"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.2",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "single",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 0.1,
+                          "color": "#EAB839"
+                        },
+                        {
+                          "value": 0.25,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": true,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "line"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-6": {
+          "kind": "Panel",
+          "spec": {
+            "id": 6,
+            "title": "Interaction to Next Paint, p75",
+            "description": "First Input Delay (FID): measures interactivity. To provide a good user experience, pages should have a FID of 100 milliseconds or less.\nhttps://web.dev/fid/",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "victoriametrics-logs-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "${datasource}"
+                        },
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "deployment.environment.name:\"$env\" AND service.name:\"$app\" AND measurement.name:\"inp\" | stats quantile(0.75, measurement.value)",
+                          "queryType": "statsRange"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.0.2",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "single",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "ms",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 100,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 300,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 0,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 1,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": true,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "line"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-8": {
+          "kind": "Panel",
+          "spec": {
+            "id": 8,
+            "title": "Time to First Byte (TTFB)",
+            "description": "TTFB is a metric that measures the time between the request for a resource and when the first byte of a response begins to arrive.\nhttps://web.dev/ttfb/",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "victoriametrics-logs-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "${datasource}"
+                        },
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "deployment.environment.name:\"$env\" AND service.name:\"$app\" AND measurement.name:\"ttfb\" | stats avg(measurement.value)",
+                          "queryType": "statsRange"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.2",
+              "spec": {
+                "options": {
+                  "colorMode": "value",
+                  "graphMode": "none",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "auto",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "ms",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 600,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-9": {
+          "kind": "Panel",
+          "spec": {
+            "id": 9,
+            "title": "First Contentful Paint (FCP)",
+            "description": "The First Contentful Paint (FCP) metric measures the time from when the page starts loading to when any part of the page's content is rendered on the screen. For this metric, \"content\" refers to text, images (including background images), <svg> elements, or non-white <canvas> elements.\nhttps://web.dev/fcp/",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "victoriametrics-logs-datasource",
+                        "version": "v0",
+                        "datasource": {
+                          "name": "${datasource}"
+                        },
+                        "spec": {
+                          "editorMode": "code",
+                          "expr": "deployment.environment.name:\"$env\" AND service.name:\"$app\" AND measurement.name:\"fcp\" | stats avg(measurement.value)",
+                          "queryType": "statsRange"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.0.2",
+              "spec": {
+                "options": {
+                  "colorMode": "value",
+                  "graphMode": "none",
+                  "justifyMode": "auto",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "auto",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "ms",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 1800,
+                          "color": "#EAB839"
+                        },
+                        {
+                          "value": 3000,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        }
+      },
+      "layout": {
+        "kind": "RowsLayout",
+        "spec": {
+          "rows": [
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "title": "Performance",
+                "collapse": false,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 0,
+                          "width": 4,
+                          "height": 3,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-8"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 4,
+                          "y": 0,
+                          "width": 4,
+                          "height": 3,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-9"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 8,
+                          "y": 0,
+                          "width": 4,
+                          "height": 3,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-11"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 12,
+                          "y": 0,
+                          "width": 4,
+                          "height": 3,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-10"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 16,
+                          "y": 0,
+                          "width": 4,
+                          "height": 3,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-12"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 20,
+                          "y": 0,
+                          "width": 4,
+                          "height": 3,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-36"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 3,
+                          "width": 8,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-2"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 8,
+                          "y": 3,
+                          "width": 8,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-4"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 16,
+                          "y": 3,
+                          "width": 8,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-6"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "title": "Exceptions",
+                "collapse": false,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 0,
+                          "width": 4,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-18"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 4,
+                          "y": 0,
+                          "width": 10,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-25"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 14,
+                          "y": 0,
+                          "width": 10,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-20"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 8,
+                          "width": 14,
+                          "height": 9,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-21"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 14,
+                          "y": 8,
+                          "width": 10,
+                          "height": 9,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-23"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "title": "Meta",
+                "collapse": false,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 0,
+                          "width": 12,
+                          "height": 10,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-29"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 12,
+                          "y": 0,
+                          "width": 12,
+                          "height": 10,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-30"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "kind": "RowsLayoutRow",
+              "spec": {
+                "title": "Events",
+                "collapse": false,
+                "layout": {
+                  "kind": "GridLayout",
+                  "spec": {
+                    "items": [
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 0,
+                          "y": 0,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-35"
+                          }
+                        }
+                      },
+                      {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                          "x": 12,
+                          "y": 0,
+                          "width": 12,
+                          "height": 8,
+                          "element": {
+                            "kind": "ElementReference",
+                            "name": "panel-37"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "links": [],
+      "liveNow": false,
+      "preload": false,
+      "tags": [],
+      "timeSettings": {
+        "timezone": "browser",
+        "from": "now-1h",
+        "to": "now",
+        "autoRefresh": "",
+        "autoRefreshIntervals": [
+          "5s",
+          "10s",
+          "30s",
+          "1m",
+          "5m",
+          "15m",
+          "30m",
+          "1h",
+          "2h",
+          "1d"
+        ],
+        "hideTimepicker": false,
+        "fiscalYearStartMonth": 0
+      },
+      "title": "Grafana Faro - Frontend Monitoring (VictoriaLogs)",
+      "variables": [
+        {
+          "kind": "DatasourceVariable",
+          "spec": {
+            "name": "datasource",
+            "pluginId": "victoriametrics-logs-datasource",
+            "refresh": "onDashboardLoad",
+            "regex": "",
+            "current": {
+              "text": "VictoriaLogs",
+              "value": "PD775F2863313E6C7"
+            },
+            "options": [],
+            "multi": false,
+            "includeAll": false,
+            "label": "datasource",
+            "hide": "hideVariable",
+            "skipUrlSync": false,
+            "allowCustomValue": true
+          }
+        },
+        {
+          "kind": "QueryVariable",
+          "spec": {
+            "name": "env",
+            "current": {
+              "text": "test",
+              "value": "test"
+            },
+            "label": "Environment",
+            "hide": "dontHide",
+            "refresh": "onDashboardLoad",
+            "skipUrlSync": false,
+            "query": {
+              "kind": "DataQuery",
+              "group": "victoriametrics-logs-datasource",
+              "version": "v0",
+              "datasource": {
+                "name": "${datasource}"
+              },
+              "spec": {
+                "field": "deployment.environment.name",
+                "limit": 25,
+                "query": "",
+                "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+                "type": "fieldValue"
+              }
+            },
+            "regex": "",
+            "regexApplyTo": "value",
+            "sort": "disabled",
+            "definition": "",
+            "options": [],
+            "multi": false,
+            "includeAll": false,
+            "allowCustomValue": true
+          }
+        },
+        {
+          "kind": "QueryVariable",
+          "spec": {
+            "name": "app",
+            "current": {
+              "text": "apihub-agents",
+              "value": "apihub-agents"
+            },
+            "label": "Application",
+            "hide": "dontHide",
+            "refresh": "onDashboardLoad",
+            "skipUrlSync": false,
+            "query": {
+              "kind": "DataQuery",
+              "group": "victoriametrics-logs-datasource",
+              "version": "v0",
+              "datasource": {
+                "name": "${datasource}"
+              },
+              "spec": {
+                "field": "service.name",
+                "limit": 25,
+                "query": "",
+                "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+                "type": "fieldValue"
+              }
+            },
+            "regex": "",
+            "regexApplyTo": "value",
+            "sort": "disabled",
+            "definition": "",
+            "options": [],
+            "multi": false,
+            "includeAll": false,
+            "allowCustomValue": true
+          }
+        }
+      ]
+    }
+  }
