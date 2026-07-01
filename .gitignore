@@ -10,3 +10,7 @@
 # Python
 venv/
 .mypy_cache/
+
+
+researches/frontend-rum/apihub-faro-docker-compose/data/
+!researches/frontend-rum/apihub-faro-docker-compose/data/.gitkeep

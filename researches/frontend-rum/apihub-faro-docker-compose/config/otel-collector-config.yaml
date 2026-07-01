@@ -1,0 +1,57 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+        # Faro runs in the browser, so CORS must allow the page origin.
+        # Tighten allowed_origins to your real frontend origin(s) in production.
+        cors:
+          allowed_origins:
+            - "http://localhost:*"
+            - "https://localhost:*"
+          allowed_headers:
+            - "*"
+
+processors:
+  batch:
+    timeout: 5s
+    send_batch_size: 1024
+  memory_limiter:
+    check_interval: 1s
+    limit_percentage: 80
+    spike_limit_percentage: 25
+
+exporters:
+  # Logs -> VictoriaLogs (native OTLP ingestion endpoint).
+  # otlphttp appends /v1/logs, giving /insert/opentelemetry/v1/logs.
+  otlphttp/victorialogs:
+    endpoint: http://victorialogs:9428/insert/opentelemetry
+    tls:
+      insecure: true
+
+  # Traces -> Grafana Tempo (OTLP gRPC).
+  otlp/tempo:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
+
+  debug:
+    verbosity: basic
+
+extensions:
+  health_check:
+    endpoint: 0.0.0.0:13133
+
+service:
+  extensions: [health_check]
+  pipelines:
+    logs:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [otlphttp/victorialogs, debug]
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [otlp/tempo, debug]
