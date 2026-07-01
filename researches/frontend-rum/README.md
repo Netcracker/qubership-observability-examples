@@ -89,6 +89,17 @@ JSON for this dashboard already added in PoC and available in [Grafana Faro Vict
 
 ### Run PoC
 
+Based of official docker compose from [https://github.com/Netcracker/qubership-apihub/tree/main/docker-compose/apihub-generic](https://github.com/Netcracker/qubership-apihub/tree/main/docker-compose/apihub-generic).
+
+But it extended:
+
+- Added OpenTelemetry Collector
+- Added VictoriaLogs
+- Added Grafana Tempo
+- Added Grafana
+
+Small changes in configurations.
+
 #### Requirements
 
 - docker or podman
