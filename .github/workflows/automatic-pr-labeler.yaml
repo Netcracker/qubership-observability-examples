@@ -14,23 +14,44 @@ on:
     types:
       [opened, reopened, synchronize]
 
-permissions:
-  pull-requests: write
-  contents: read
-  issues: write
+permissions: {}
+
+concurrency:
+  group: automatic-pr-labeler-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  assign-labels:
-    if: (github.event.pull_request.merged == false) && (github.event.pull_request.user.login != 'dependabot[bot]') && (github.event.pull_request.user.login != 'github-actions[bot]')
+  prepare-config:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      restricted-actor: ${{ steps.resolve.outputs.restricted-actor }}
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Resolve restricted actor
+        id: resolve
+        uses: ./.github/actions/resolve-restricted-actor
+
+  assign-labels:
+    needs: prepare-config
+    if: ${{ github.event.pull_request.merged == false && needs.prepare-config.outputs.restricted-actor != 'true' && github.event.pull_request.user.login != 'github-actions[bot]' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
         with:
           persist-credentials: false
 
       - name: "Execute assign labels"
         id: action-assign-labels
-        uses: mauroalderete/action-assign-labels@671a4ca2da0f900464c58b8b5540a1e07133e915 # v1.5.1
+        uses: mauroalderete/action-assign-labels@671a4ca2da0f900464c58b8b5540a1e07133e915  # v1.5.1
         with:
           pull-request-number: ${{ github.event.pull_request.number }}
           github-token: ${{ github.token }}
