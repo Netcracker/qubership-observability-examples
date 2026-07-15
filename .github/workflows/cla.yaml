@@ -6,8 +6,11 @@ on:
   pull_request_target:
     types: [opened]
 
-permissions:
-  contents: read
+permissions: {}
+
+concurrency:
+  group: cla-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   CLAAssistant:

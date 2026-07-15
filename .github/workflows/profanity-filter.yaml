@@ -9,18 +9,39 @@ on:
   pull_request:
     types: [opened, edited, reopened]
 
-permissions:
-  issues: write
-  pull-requests: write
+permissions: {}
+
+concurrency:
+  group: profanity-filter-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  apply-filter:
+  prepare-config:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      restricted-actor: ${{ steps.resolve.outputs.restricted-actor }}
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Resolve restricted actor
+        id: resolve
+        uses: ./.github/actions/resolve-restricted-actor
+
+  apply-filter:
+    needs: prepare-config
+    if: ${{ needs.prepare-config.outputs.restricted-actor != 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
     steps:
     - name: Scan issue or pull request for profanity
-      # Conditionally run the step if the actor isn't a bot
-      if: ${{ github.actor != 'dependabot[bot]' && github.actor != 'github-actions[bot]' }}
-      uses: IEvangelist/profanity-filter@10.0
+      uses: IEvangelist/profanity-filter@7d6e0c79ee3d33ae09b5ed0c6e2fa04b9c512e08  # 10.0
       id: profanity-filter
       with:
         token: ${{ secrets.GITHUB_TOKEN }}

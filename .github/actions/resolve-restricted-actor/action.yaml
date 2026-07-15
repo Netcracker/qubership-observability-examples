@@ -1,0 +1,21 @@
+---
+name: Resolve restricted actor
+description: Resolve whether the current actor should skip token-dependent checks.
+outputs:
+  restricted-actor:
+    description: "true when the actor is listed in .github/config/build-config.yaml"
+    value: ${{ steps.config.outputs.restricted-actor }}
+runs:
+  using: composite
+  steps:
+    - name: Resolve restricted actor
+      id: config
+      shell: bash
+      env:
+        ACTOR: ${{ github.actor }}
+      run: |
+        restricted=false
+        if [ -f .github/config/build-config.yaml ] && grep -Fxq "  - ${ACTOR}" .github/config/build-config.yaml; then
+          restricted=true
+        fi
+        echo "restricted-actor=${restricted}" >> "$GITHUB_OUTPUT"

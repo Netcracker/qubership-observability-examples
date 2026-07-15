@@ -1,0 +1,4 @@
+---
+restricted-actors:
+  - dependabot[bot]
+  - renovate[bot]
