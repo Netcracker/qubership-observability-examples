@@ -114,8 +114,11 @@ jobs:
       uses: super-linter/super-linter/slim@4ce20838b8ab83717e78138c5b3a1407148e0918 # v8.7.0
       env:
         VALIDATE_ALL_CODEBASE: ${{ inputs.full_scan || false }}
-        # To report GitHub Actions status checks for unrestricted actors.
+        # Restricted actors get an empty token so they cannot publish statuses.
+        # super-linter v8 fatals when these stay at the image default (true) without one.
         GITHUB_TOKEN: ${{ needs.resolve-actor.outputs.restricted-actor != 'true' && secrets.GITHUB_TOKEN || '' }}
+        MULTI_STATUS: ${{ needs.resolve-actor.outputs.restricted-actor == 'true' && 'false' || 'true' }}
+        ENABLE_GITHUB_PULL_REQUEST_SUMMARY_COMMENT: ${{ needs.resolve-actor.outputs.restricted-actor == 'true' && 'false' || 'true' }}
         DEFAULT_BRANCH: ${{ github.event.pull_request.base.ref || github.event.push.ref }}
 
   lint-gate:

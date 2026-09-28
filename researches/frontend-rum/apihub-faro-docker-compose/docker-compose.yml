@@ -1,258 +1,258 @@
 version: '3.9'
 services:
-    ################################################# APIHUB components ################################################
-    qubership-apihub-backend:
-        image: ghcr.io/netcracker/qubership-apihub-backend:dev
-        #image: localhost/netcracker/qubership-apihub-backend:latest
-        container_name: qubership-apihub-backend
-        ports:
-        - "8090:8080"
-        - "47375:47375"
-        - "47376:47376"
-        environment:
-            - APIHUB_CONFIG_FOLDER=/app/qubership-apihub-service/
-            - GOMEMLIMIT=800MiB
-        volumes:
-            - ./qubership-apihub-backend-config.yaml:/app/qubership-apihub-service/config.yaml
-        healthcheck:
-            test: [ "CMD-SHELL", "curl --silent --fail localhost:8080/ready || exit 1" ]
-            interval: 10s
-            timeout: 10s
-            retries: 10
-            start_period: 5s
-        restart: unless-stopped
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.5'
-                    memory: 1G
-        networks:
-            default:
-                aliases:
-                - qubership-apihub-backend
-        depends_on:
-            postgres:
-                condition: service_healthy
+  ################################################# APIHUB components ################################################
+  qubership-apihub-backend:
+    image: ghcr.io/netcracker/qubership-apihub-backend:dev@sha256:a44d97600d3feba549315a445bbefe6f1fae6fe6cac6fbc1575351d39fbd48f9
+    #image: localhost/netcracker/qubership-apihub-backend:latest
+    container_name: qubership-apihub-backend
+    ports:
+    - "8090:8080"
+    - "47375:47375"
+    - "47376:47376"
+    environment:
+    - APIHUB_CONFIG_FOLDER=/app/qubership-apihub-service/
+    - GOMEMLIMIT=800MiB
+    volumes:
+    - ./qubership-apihub-backend-config.yaml:/app/qubership-apihub-service/config.yaml
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --silent --fail localhost:8080/ready || exit 1" ]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 5s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1G
+    networks:
+      default:
+        aliases:
+        - qubership-apihub-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
 
-    qubership-apihub-build-task-consumer:
-        image: ghcr.io/netcracker/qubership-apihub-build-task-consumer:dev
-        container_name: qubership-apihub-build-task-consumer
-        ports:
-        - "3001:3001"
-        env_file: "qubership-apihub-build-task-consumer.env"
-        healthcheck:
-            test: [ "CMD-SHELL", "curl --silent --fail localhost:3000/live || exit 1" ]
-            interval: 120s
-            timeout: 60s
-            retries: 10
-            start_period: 5s
-        restart: unless-stopped
-        deploy:
-            resources:
-                limits:
-                    cpus: '1'
-                    memory: 2G
-        networks:
-            default:
-                aliases:
-                - qubership-apihub-build-task-consumer
-        depends_on:
-            qubership-apihub-backend:
-                condition: service_healthy
+  qubership-apihub-build-task-consumer:
+    image: ghcr.io/netcracker/qubership-apihub-build-task-consumer:dev@sha256:83a82afb65b7a210861cfff5a1de274ca926d2e2bdf378fa3f7b75325e798326
+    container_name: qubership-apihub-build-task-consumer
+    ports:
+    - "3001:3001"
+    env_file: "qubership-apihub-build-task-consumer.env"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --silent --fail localhost:3000/live || exit 1" ]
+      interval: 120s
+      timeout: 60s
+      retries: 10
+      start_period: 5s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+    networks:
+      default:
+        aliases:
+        - qubership-apihub-build-task-consumer
+    depends_on:
+      qubership-apihub-backend:
+        condition: service_healthy
 
-    qubership-apihub-ui:
-        image: ghcr.io/netcracker/qubership-apihub-ui:feature-integrate-grafana-faro
-        container_name: qubership-apihub-ui
-        ports:
-        - "8081:8080"
-        env_file: "qubership-apihub-ui.env"
-        healthcheck:
-            test: [ "CMD-SHELL", "curl --silent --fail localhost:8080/probes/live || exit 1" ]
-            interval: 10s
-            timeout: 10s
-            retries: 10
-            start_period: 5s
-        restart: unless-stopped
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.5'
-                    memory: 500M
-        networks:
-            default:
-                aliases:
-                - qubership-apihub-ui
-        depends_on:
-            qubership-apihub-backend:
-                condition: service_healthy
+  qubership-apihub-ui:
+    image: ghcr.io/netcracker/qubership-apihub-ui:feature-integrate-grafana-faro@sha256:348fa43b602ecaaf16dc52ddfcae3a795c24bf0d5661bc9e4d1b2502df543f72
+    container_name: qubership-apihub-ui
+    ports:
+    - "8081:8080"
+    env_file: "qubership-apihub-ui.env"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --silent --fail localhost:8080/probes/live || exit 1" ]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 5s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 500M
+    networks:
+      default:
+        aliases:
+        - qubership-apihub-ui
+    depends_on:
+      qubership-apihub-backend:
+        condition: service_healthy
 
-    qubership-api-linter-service:
-        image: ghcr.io/netcracker/qubership-api-linter-service:dev
-        container_name: qubership-api-linter-service
-        ports:
-        - "8091:8080"
-        env_file: "qubership-api-linter-service.env"
-        healthcheck:
-            test: [ "CMD-SHELL", "curl --silent --fail localhost:8080/ready || exit 1" ]
-            interval: 10s
-            timeout: 10s
-            retries: 10
-            start_period: 5s
-        restart: unless-stopped
-        deploy:
-            resources:
-                limits:
-                    cpus: '1'
-                    memory: 2G
-        networks:
-            default:
-                aliases:
-                - qubership-api-linter-service
-        depends_on:
-            qubership-apihub-ui:
-                condition: service_healthy
+  qubership-api-linter-service:
+    image: ghcr.io/netcracker/qubership-api-linter-service:dev@sha256:1f4363fe7873fdd415e87e1b697f6ae5817e793b9998156b9d0f6eecad275e5e
+    container_name: qubership-api-linter-service
+    ports:
+    - "8091:8080"
+    env_file: "qubership-api-linter-service.env"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --silent --fail localhost:8080/ready || exit 1" ]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 5s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+    networks:
+      default:
+        aliases:
+        - qubership-api-linter-service
+    depends_on:
+      qubership-apihub-ui:
+        condition: service_healthy
 
-    qubership-apihub-agents-backend:
-        image: ghcr.io/netcracker/qubership-apihub-agents-backend:dev
-        container_name: qubership-apihub-agents-backend
-        ports:
-        - "8092:8080"
-        env_file: "qubership-apihub-agents-backend.env"
-        healthcheck:
-            test: [ "CMD-SHELL", "curl --silent --fail localhost:8080/ready || exit 1" ]
-            interval: 10s
-            timeout: 10s
-            retries: 10
-            start_period: 5s
-        restart: unless-stopped
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.25'
-                    memory: 256M
-        networks:
-            default:
-                aliases:
-                - qubership-apihub-agents-backend
-        depends_on:
-            qubership-apihub-ui:
-                condition: service_healthy
+  qubership-apihub-agents-backend:
+    image: ghcr.io/netcracker/qubership-apihub-agents-backend:dev@sha256:16bb149f608c2b09b0caf85ba4a306c2a2cb716919036937afa2b1ba2403c82a
+    container_name: qubership-apihub-agents-backend
+    ports:
+    - "8092:8080"
+    env_file: "qubership-apihub-agents-backend.env"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --silent --fail localhost:8080/ready || exit 1" ]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 5s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+    networks:
+      default:
+        aliases:
+        - qubership-apihub-agents-backend
+    depends_on:
+      qubership-apihub-ui:
+        condition: service_healthy
 
-    postgres:
-        image: docker.io/postgres
-        container_name: postgres
-        command:
-            - "postgres"
-            - "-c"
-            - "max_connections=50"
-            - "-c"
-            - "shared_buffers=1GB"
-            - "-c"
-            - "effective_cache_size=1GB"
-            - "-c"
-            - "work_mem=16MB"
-            - "-c"
-            - "maintenance_work_mem=512MB"
-            - "-c"
-            - "random_page_cost=1.1"
-            - "-c"
-            - "temp_file_limit=10GB"
-            - "-c"
-            - "log_min_duration_statement=200ms"
-            - "-c"
-            - "idle_in_transaction_session_timeout=10s"
-            - "-c"
-            - "lock_timeout=1s"
-            - "-c"
-            - "shared_preload_libraries=pg_stat_statements"
-            - "-c"
-            - "pg_stat_statements.max=10000"
-            - "-c"
-            - "pg_stat_statements.track=all"
-        environment:
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=postgres
-        - POSTGRES_DB=postgres
-        - PGDATA=/pgdata
-        ports:
-        - 5432:5432
-        healthcheck:
-            test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-            interval: 10s
-            timeout: 15s
-            retries: 15
-            start_period: 5s
-        restart: unless-stopped
-        deploy:
-            resources:
-                limits:
-                    cpus: '1'
-                    memory: 3G
-        volumes:
-        - './data:/var/lib/postgresql/data:Z'
-        - './scripts/init-db:/docker-entrypoint-initdb.d'
+  postgres:
+    image: docker.io/postgres@sha256:5a5a84b19854a9ffaa54082c166ff4ec27473a361e496e5ea167f298f2da9722
+    container_name: postgres
+    command:
+    - "postgres"
+    - "-c"
+    - "max_connections=50"
+    - "-c"
+    - "shared_buffers=1GB"
+    - "-c"
+    - "effective_cache_size=1GB"
+    - "-c"
+    - "work_mem=16MB"
+    - "-c"
+    - "maintenance_work_mem=512MB"
+    - "-c"
+    - "random_page_cost=1.1"
+    - "-c"
+    - "temp_file_limit=10GB"
+    - "-c"
+    - "log_min_duration_statement=200ms"
+    - "-c"
+    - "idle_in_transaction_session_timeout=10s"
+    - "-c"
+    - "lock_timeout=1s"
+    - "-c"
+    - "shared_preload_libraries=pg_stat_statements"
+    - "-c"
+    - "pg_stat_statements.max=10000"
+    - "-c"
+    - "pg_stat_statements.track=all"
+    environment:
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
+    - POSTGRES_DB=postgres
+    - PGDATA=/pgdata
+    ports:
+    - 5432:5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 15s
+      retries: 15
+      start_period: 5s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 3G
+    volumes:
+    - './data:/var/lib/postgresql/data:Z'
+    - './scripts/init-db:/docker-entrypoint-initdb.d'
 
-    ############################################# OTEC + Backend Telemetry #############################################
+  ############################################# OTEC + Backend Telemetry #############################################
 
-    # OpenTelemetry Collector — single entrypoint for all Grafana Faro telemetry (OTLP).
-    # Fans out: logs -> VictoriaLogs, traces -> Grafana Tempo.
-    otel-collector:
-      image: otel/opentelemetry-collector-contrib:0.123.0
-      container_name: otel-collector
-      command: ["--config=/etc/otelcol/config.yaml"]
-      volumes:
-        - ./config/otel-collector-config.yaml:/etc/otelcol/config.yaml:ro
-      ports:
-        - "4317:4317"   # OTLP gRPC
-        - "4318:4318"   # OTLP HTTP (Faro browser SDK sends here)
-        - "13133:13133" # health_check
-      depends_on:
-        - victorialogs
-        - tempo
-      restart: unless-stopped
+  # OpenTelemetry Collector — single entrypoint for all Grafana Faro telemetry (OTLP).
+  # Fans out: logs -> VictoriaLogs, traces -> Grafana Tempo.
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.123.0@sha256:e39311df1f3d941923c00da79ac7ba6269124a870ee87e3c3ad24d60f8aee4d2
+    container_name: otel-collector
+    command: ["--config=/etc/otelcol/config.yaml"]
+    volumes:
+    - ./config/otel-collector-config.yaml:/etc/otelcol/config.yaml:ro
+    ports:
+    - "4317:4317"   # OTLP gRPC
+    - "4318:4318"   # OTLP HTTP (Faro browser SDK sends here)
+    - "13133:13133" # health_check
+    depends_on:
+    - victorialogs
+    - tempo
+    restart: unless-stopped
 
-    # VictoriaLogs — log storage & query backend.
-    victorialogs:
-      image: victoriametrics/victoria-logs:v1.51.0
-      container_name: victorialogs
-      command:
-        - "--storageDataPath=/vlogs"
-        - "--httpListenAddr=:9428"
-      volumes:
-        - ./data/victorialogs:/vlogs
-      ports:
-        - "9428:9428"
-      restart: unless-stopped
+  # VictoriaLogs — log storage & query backend.
+  victorialogs:
+    image: victoriametrics/victoria-logs:v1.51.0@sha256:e16dd33a95623cc21730cf5285344ed9f97419eeaff7d24b039c135beb85ee7e
+    container_name: victorialogs
+    command:
+    - "--storageDataPath=/vlogs"
+    - "--httpListenAddr=:9428"
+    volumes:
+    - ./data/victorialogs:/vlogs
+    ports:
+    - "9428:9428"
+    restart: unless-stopped
 
-    # Grafana Tempo — trace storage & query backend.
-    tempo:
-      image: grafana/tempo:2.10.7
-      container_name: tempo
-      command: ["-config.file=/etc/tempo/tempo.yaml"]
-      user: "0:0"
-      volumes:
-        - ./config/tempo.yaml:/etc/tempo/tempo.yaml:ro
-        - ./data/tempo:/var/tempo
-      ports:
-        - "3200:3200"   # Tempo query API
-      restart: unless-stopped
+  # Grafana Tempo — trace storage & query backend.
+  tempo:
+    image: grafana/tempo:2.10.7@sha256:032b3acb51ed02c4b801473d54bb63e9e9f13738d215126d9843c30283794f4b
+    container_name: tempo
+    command: ["-config.file=/etc/tempo/tempo.yaml"]
+    user: "0:0"
+    volumes:
+    - ./config/tempo.yaml:/etc/tempo/tempo.yaml:ro
+    - ./data/tempo:/var/tempo
+    ports:
+    - "3200:3200"   # Tempo query API
+    restart: unless-stopped
 
-    # Grafana — visualization, wired to both VictoriaLogs and Tempo.
-    grafana:
-      image: grafana/grafana:13.0.2
-      container_name: grafana
-      environment:
-        - GF_SECURITY_ADMIN_USER=admin
-        - GF_SECURITY_ADMIN_PASSWORD=admin
-        - GF_AUTH_ANONYMOUS_ENABLED=true
-        - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-        - GF_INSTALL_PLUGINS=victoriametrics-logs-datasource
-      volumes:
-        - ./config/grafana/provisioning:/etc/grafana/provisioning:ro
-        - ./data/grafana:/var/lib/grafana
-      ports:
-        - "3000:3000"
-      depends_on:
-        - victorialogs
-        - tempo
-      restart: unless-stopped
+  # Grafana — visualization, wired to both VictoriaLogs and Tempo.
+  grafana:
+    image: grafana/grafana:13.0.2@sha256:5dad0df181cb644a14e13617b913b261a54f7d4fd4510721dba420929f35bea2
+    container_name: grafana
+    environment:
+    - GF_SECURITY_ADMIN_USER=admin
+    - GF_SECURITY_ADMIN_PASSWORD=admin
+    - GF_AUTH_ANONYMOUS_ENABLED=true
+    - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    - GF_INSTALL_PLUGINS=victoriametrics-logs-datasource
+    volumes:
+    - ./config/grafana/provisioning:/etc/grafana/provisioning:ro
+    - ./data/grafana:/var/lib/grafana
+    ports:
+    - "3000:3000"
+    depends_on:
+    - victorialogs
+    - tempo
+    restart: unless-stopped
