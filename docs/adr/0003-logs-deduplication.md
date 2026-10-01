@@ -55,9 +55,9 @@ RAM: ~70 Mb
 
 #### Rejected Alternatives
 
-| Option                         | Pros                                                             | Cons                                                                                                                                                 |
-| ------------------------------ | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Deduplication in **FluentBit** | No additional components<br>No additional network traffic        | `log_suppress_interval` broken (Issue from 2023: [#7051](https://github.com/fluent/fluent-bit/issues/7051))                                          |
+| Option                         | Pros                                                             | Cons                                                                                                                                                  |
+| ------------------------------ | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- -|
+| Deduplication in **FluentBit** | No additional components<br>No additional network traffic        | `log_suppress_interval` broken (Issue from 2023: [#7051](https://github.com/fluent/fluent-bit/issues/7051))                                           |
 | Deduplication in **Vector**    | Single tool for ingestion+dedup<br>No additional network traffic | - Requires re-implementing all parsers, steep learning curve for current FluetnBit users<br>- There's no output value for deduplicated messages count |
 
 ## Consequences
