@@ -3,14 +3,14 @@
 ## Status
 Proposed
 
-#### Date
+### Date
 2025-06-30
 
-#### Owner
+### Owner
 
 [Denis Filatov](https://github.com/denifilatoff)
 
-#### Participants and approvers
+### Participants and approvers
 
 - [pankratovsa](https://github.com/pankratovsa)
 - [shumnic](https://github.com/shumnic)
@@ -19,7 +19,7 @@ Proposed
 - [Vladimir Sitnikov](https://github.com/vlsi)
 - [egbu](https://github.com/egbu)
 
-#### Related ADRs
+### Related ADRs
 None
 
 ## Context

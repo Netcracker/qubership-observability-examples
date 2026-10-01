@@ -2,17 +2,17 @@
 
 ## Status
 **Proposed**  
-#### Date  
+### Date  
 2025-04-03
-#### Owner  
+### Owner  
 [Denis Filatov](https://github.com/denifilatoff)
-#### Participants and approvers  
+### Participants and approvers  
 - [IldarMinaev](https://github.com/IldarMinaev)
 - [Alexey Karasev](https://github.com/asatt)
 - [Vladimir Sitnikov](https://github.com/vlsi)
 - [FedorProshin](https://github.com/FedorProshin)
-#### Related ADRs  
-- [0001: OpenTelemetry for Traces, Metrics, Logs](https://github.com/Netcracker/qubership-observability-operator/blob/main/docs/adr/0001-opentelemetry-for-traces-metrics-logs.md)  
+### Related ADRs  
+- [0001: OpenTelemetry for Traces, Metrics, Logs](0001-opentelemetry-for-traces-metrics-logs.md)  
 
 ## Context  
 The current probabilistic sampling strategy (1-10% random sampling) fails to capture critical debugging data:
@@ -24,7 +24,7 @@ OpenTelemetry Collector (adopted per ADR 0001) provides two sampling approaches:
 1. **Head-based** (probabilistic/rate-limiting)  
 2. **Tail-based** (post-trace decision-making)  
 
-Key tradeoff: Tail-based sampling introduces computational overhead but enables intelligent retention of high-value traces.  
+Key trade-off: Tail-based sampling introduces computational overhead but enables intelligent retention of high-value traces.  
 
 ## Decision  
 We will implement the [OpenTelemetry Tail Sampling Processor](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/tailsamplingprocessor/README.md) as the default strategy for DEV/QA/CI environments with these OOB configurations:  
@@ -53,15 +53,15 @@ Tested ~200 traces/sec (50KB each = ~10MB/s load)
 | Tail Sampling (100% sampled)    | 552 (x 3 overhead)           | 460 (x 2.5 overhead)     | 36                    |
 
 The reason of high RAM consumption is buffer for traces before make a decision.
-Raw theoretical calculation: 31 s * 200 traces/sec * 0.05 Mb = 310Mb overheads for buffer
+Raw theoretical calculation: 31 s \* 200 traces/sec \* 0.05 Mb = 310Mb overheads for buffer
 
 We cannot clearly explain CPU overhead. But the reproductable trends are next:
 - CPU strongly depends on Sapling rate (165 MIllicore for 10% --> 552 Millcore for 100%)
 - CPU not depends on type of policy (Composite or none Composite). We perform test with 100% Probalilistic filter in Composite and standalone. CPU consumption was similar.
-- CPU not depends on the number of subpolicies in Composite policy. We testes only 100% Probabilistic and 3 different sub-policies (attribute in trace, error, probabilistic). CPU consumption was similar. 
-**For us it means that for Sampling rate near 1-10% CPU consumption will be closed to "none Tail Sampling" option.** 
+- CPU not depends on the number of subpolicies in Composite policy. We testes only 100% Probabilistic and 3 different sub-policies (attribute in trace, error, probabilistic). CPU consumption was similar.
+**For us it means that for Sampling rate near 1-10% CPU consumption will be closed to "none Tail Sampling" option.**
 
-### Rejected alternatives: 
+### Rejected alternatives
 - **Head-based sampling**: Fails core requirements for error retention  
 - **Full sampling**: Prohibitively expensive at scale  
 
